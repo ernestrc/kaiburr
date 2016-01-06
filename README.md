@@ -27,7 +27,7 @@ linker = "arm-linux-gnueabihf-gcc-$VERSION"
 cd openssl
 git checkout OpenSSL_1_0_2-stable
 ./Configure dist --prefix=$KAIBURR_SRC/lib/openssl
-make CC=arm-unknown-linux-gnueabihf-$VERSION
+make CC=arm-linux-gnueabihf-gcc-$VERSION
 make install
 ```
 5- Download rustlib for ARM [https://github.com/warricksothr/RustBuild](https://github.com/warricksothr/RustBuild) and install in the toolchain's lib. If you `tree $HOME/.multirust/toolchains/stable/lib` you should see something like this:
@@ -42,4 +42,13 @@ make install
         └── lib
 
 ```
-6- Run `./scripts/build-target-arm`
+6- Run 
+```bash
+export OPENSSL_LIB_DIR=`pwd`/lib/openssl
+export OPENSSL_INCLUDE_DIR=`pwd`/lib/openssl/include
+
+echo "OPENSSL_LIB_DIR=$OPENSSL_LIB_DIR"
+echo "OPENSSL_INCLUDE_DIR=$OPENSSL_INCLUDE_DIR"
+
+cargo build --target=arm-unknown-linux-gnueabihf --verbose
+```
